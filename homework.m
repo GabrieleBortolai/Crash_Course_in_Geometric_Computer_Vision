@@ -7,28 +7,25 @@ I = imread("IMG_2506.jpg");
 % imshow(I)
 
 % Inuput the 2D and 3D (M in cm) points
-% m = ginput(12)';
+% m = ginput(9)';
 % 
-% M = 2 * [1, 0, 1
-%       2, 0, 2
-%       5, 0, 3
-%       6, 0, 4
+% M = 20 * [1, 0, 1
 %       0, 1, 1
-%       0, 3, 5
-%       0, 4, 7
-%       0, 2, 7
 %       8, 0, 1
 %       8, 0, 8
 %       0, 8, 1
-%       0, 8, 8]';
+%       0, 8, 8
+%       0, 1, 8
+%       0, 4, 5
+%       3, 0, 6]';
 
-% Save the matrices because I am lazy
+% Save matrices
 
 % writematrix(m, 'm_s.txt');
 % writematrix(M, 'm_b.txt');
 
 m = readmatrix('m_s.txt');
-M= readmatrix('m_b.txt');
+M = readmatrix('m_b.txt');
 
 P = dlt(m, M);
 
@@ -37,7 +34,7 @@ size(I)/2;
 [K, ~, ~] = ud_krt(P);
 
 % Recontruction of the 2D points
-m1 = ud_htx(P,M);
+m1 = htx(P,M);
 
 % Plotting the reconstructed points
 figure
@@ -48,28 +45,27 @@ hold on
 %% Epipolar Lines
 
 S = imread("bottle_1.jpg");
-% imshow(S)
+imshow(S)
 
-% m_S1 = ginput(12)';
-% writematrix(m_S1, 'm_s1.txt')
+m_S1 = ginput(10)';
+writematrix(m_S1, "m_s1.txt")
 
 S2 = imread("bottle_2.jpg");
-% imshow(S2)
+imshow(S2)
 
-% m_S2 = ginput(12)';
-% writematrix(m_S2, 'm_s2.txt')
+m_S2 = ginput(10)';
+writematrix(m_S2, "m_s2.txt")
 
 m_S1 = readmatrix("m_s1.txt");
 m_S2 = readmatrix("m_s2.txt");
 
-F = ud_8_pts(m_S2, m_S1);
+F = eight_pts(m_S2, m_S1);
 
 % Homogeneous Coordinates
 m_S1_o = [m_S1; ones(1, size(m_S1, 2))];
 m_S2_o = [m_S2; ones(1, size(m_S2, 2))];
 
 % Epipolar Lines and plotting them
-
 line_1 = F * m_S1_o;
 line_2 = F' * m_S2_o;
 
@@ -77,9 +73,7 @@ figure
 imshow(S2)
 hold on
     Epipolar_Line(line_1, S2);
-    plot(m_S2(1,:), m_S2(2,:), 'or','MarkerSize',30);
-    
-    
+    plot(m_S2(1,:), m_S2(2,:), 'or','MarkerSize',30);  
 
 figure
 imshow(S)
@@ -113,6 +107,7 @@ m_S2_comp = ud_htx(P_m{2}, M_S);
 
 figure
 imshow(S)
+size(S)
 hold on
     Checking(m_S1, m_S1_comp)
 
@@ -137,18 +132,17 @@ function Epipolar_Line(epline, S)
     
     for i = 1:size(epline, 2)
     
-    A = epline(1,i);
-    B = epline(2,i);
-    C = epline(3,i);
-
-    X1 = 0;
-    X2 = (size(S, 2));
-
-    x = linspace(X1, X2);
-
-    y = -(A.* x./B) - (C/B);
-    line(x, y)
-
+        A = epline(1,i);
+        B = epline(2,i);
+        C = epline(3,i);
+    
+        X1 = 0;
+        X2 = size(S, 1);
+    
+        x = linspace(X1, X2);
+    
+        y = -(A.* x./B) - (C/B);
+        line(x, y)
 
     end
 end
