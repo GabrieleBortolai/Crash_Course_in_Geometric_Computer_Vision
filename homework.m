@@ -10,13 +10,13 @@ I = imread("IMG_2506.jpg");
 % m = ginput(12)';
 % 
 % M = 2 * [1, 0, 1
-%       3, 0, 1
-%       4, 0, 4
-%       5, 0, 4
-%       0, 1, 5
+%       2, 0, 2
+%       5, 0, 3
+%       6, 0, 4
+%       0, 1, 1
 %       0, 3, 5
 %       0, 4, 7
-%       0, 6, 7
+%       0, 2, 7
 %       8, 0, 1
 %       8, 0, 8
 %       0, 8, 1
@@ -48,13 +48,13 @@ hold on
 %% Epipolar Lines
 
 S = imread("bottle_1.jpg");
-imshow(S)
+% imshow(S)
 
 % m_S1 = ginput(12)';
 % writematrix(m_S1, 'm_s1.txt')
 
 S2 = imread("bottle_2.jpg");
-imshow(S2)
+% imshow(S2)
 
 % m_S2 = ginput(12)';
 % writematrix(m_S2, 'm_s2.txt')
@@ -76,14 +76,18 @@ line_2 = F' * m_S2_o;
 figure
 imshow(S2)
 hold on
-    plot(m_S2(1,:), m_S2(2,:), 'or','MarkerSize',30);
     Epipolar_Line(line_1, S2);
+    plot(m_S2(1,:), m_S2(2,:), 'or','MarkerSize',30);
+    
+    
 
 figure
 imshow(S)
 hold on
-    plot(m_S1(1,:), m_S1(2,:), 'or','MarkerSize',30);
     Epipolar_Line(line_2, S);
+    plot(m_S1(1,:), m_S1(2,:), 'or','MarkerSize',30);
+    
+    
 
 
 %% Factorisation of E and Triangulation
