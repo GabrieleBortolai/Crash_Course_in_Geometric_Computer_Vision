@@ -4,20 +4,22 @@ clc
 
 % Loading the calibration image
 I = imread("IMG_2506.jpg");
-% imshow(I)
+imshow(I)
 
-% Inuput the 2D and 3D (M in cm) points
-% m = ginput(9)';
+% Inuput the 2D and 3D (M in mm) points
+% m = ginput(11)';
 % 
-% M = 20 * [1, 0, 1
+% M = 20 * [1, 0, 2
 %       0, 1, 1
 %       8, 0, 1
-%       8, 0, 8
-%       0, 8, 1
-%       0, 8, 8
-%       0, 1, 8
-%       0, 4, 5
-%       3, 0, 6]';
+%       7, 0, 8
+%       0, 8, 2
+%       0, 7, 8
+%       0, 1, 7
+%       0, 4, 4
+%       3, 0, 6
+%       5, 0, 3
+%       0, 6, 5]';
 
 % Save matrices
 
@@ -31,7 +33,7 @@ P = dlt(m, M);
 
 % Checking if everything is ok
 size(I)/2;
-[K, ~, ~] = ud_krt(P);
+[K, ~, ~] = ud_krt(P)
 
 % Recontruction of the 2D points
 m1 = htx(P,M);
@@ -47,14 +49,14 @@ hold on
 S = imread("bottle_1.jpg");
 imshow(S)
 
-m_S1 = ginput(10)';
-writematrix(m_S1, "m_s1.txt")
+% m_S1 = ginput(15)';
+% writematrix(m_S1, "m_s1.txt")
 
 S2 = imread("bottle_2.jpg");
 imshow(S2)
 
-m_S2 = ginput(10)';
-writematrix(m_S2, "m_s2.txt")
+% m_S2 = ginput(15)';
+% writematrix(m_S2, "m_s2.txt")
 
 m_S1 = readmatrix("m_s1.txt");
 m_S2 = readmatrix("m_s2.txt");
@@ -73,16 +75,13 @@ figure
 imshow(S2)
 hold on
     Epipolar_Line(line_1, S2);
-    plot(m_S2(1,:), m_S2(2,:), 'or','MarkerSize',30);  
+    plot(m_S2(1,:), m_S2(2,:), '+g','MarkerSize',15);  
 
 figure
 imshow(S)
 hold on
     Epipolar_Line(line_2, S);
-    plot(m_S1(1,:), m_S1(2,:), 'or','MarkerSize',30);
-    
-    
-
+    plot(m_S1(1,:), m_S1(2,:), '+g','MarkerSize',15);
 
 %% Factorisation of E and Triangulation
 
