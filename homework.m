@@ -7,16 +7,20 @@ I = imread("IMG_2506.jpg");
 % imshow(I)
 
 % Inuput the 2D and 3D (M in cm) points
-% m = ginput(8)';
-
+% m = ginput(12)';
+% 
 % M = 2 * [1, 0, 1
-%      3, 0, 1
-%      4, 0, 4
-%      5, 0, 4
-%      0, 1, 5
-%      0, 3, 5
-%      0, 4, 7
-%      0, 6, 7]';
+%       3, 0, 1
+%       4, 0, 4
+%       5, 0, 4
+%       0, 1, 5
+%       0, 3, 5
+%       0, 4, 7
+%       0, 6, 7
+%       8, 0, 1
+%       8, 0, 8
+%       0, 8, 1
+%       0, 8, 8]';
 
 % Save the matrices because I am lazy
 
@@ -44,15 +48,15 @@ hold on
 %% Epipolar Lines
 
 S = imread("bottle_1.jpg");
-% imshow(S)
+imshow(S)
 
-% m_S1 = ginput(8)';
+% m_S1 = ginput(12)';
 % writematrix(m_S1, 'm_s1.txt')
 
 S2 = imread("bottle_2.jpg");
-% imshow(S2)
+imshow(S2)
 
-% m_S2 = ginput(8)';
+% m_S2 = ginput(12)';
 % writematrix(m_S2, 'm_s2.txt')
 
 m_S1 = readmatrix("m_s1.txt");
@@ -119,7 +123,7 @@ function Checking(m, m1)
      plot(m(1,:), m(2,:), '+g','MarkerSize',15);
      plot(m1(1,:), m1(2,:),   'or','MarkerSize',15);
 
- for ii = 1:8
+ for ii = 1:size(m, 2)
                 text(m(1,ii)+4, m(2,ii)+4,num2str(ii),'Color','r', 'FontSize', 25)
  end
 
