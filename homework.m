@@ -33,7 +33,7 @@ P = dlt(m, M);
 
 % Checking if everything is ok
 size(I)/2;
-[K, ~, ~] = ud_krt(P)
+[K, ~, ~] = ud_krt(P);
 
 % Recontruction of the 2D points
 m1 = htx(P,M);
@@ -47,13 +47,15 @@ hold on
 %% Epipolar Lines
 
 S = imread("bottle_1.jpg");
-imshow(S)
+% figure
+% imshow(S)
 
 % m_S1 = ginput(15)';
 % writematrix(m_S1, "m_s1.txt")
 
 S2 = imread("bottle_2.jpg");
-imshow(S2)
+% figure
+% imshow(S2)
 
 % m_S2 = ginput(15)';
 % writematrix(m_S2, "m_s2.txt")
@@ -61,11 +63,16 @@ imshow(S2)
 m_S1 = readmatrix("m_s1.txt");
 m_S2 = readmatrix("m_s2.txt");
 
-F = eight_pts(m_S2, m_S1);
+F = eight_pts(m_S2, m_S1)
 
 % Homogeneous Coordinates
 m_S1_o = [m_S1; ones(1, size(m_S1, 2))];
 m_S2_o = [m_S2; ones(1, size(m_S2, 2))];
+
+for i=1:size(m_S1_o,2)
+    m_S2_o(:,i)'*F*m_S1_o(:,i)
+end
+
 
 % Epipolar Lines and plotting them
 line_1 = F * m_S1_o;
@@ -77,11 +84,11 @@ hold on
     Epipolar_Line(line_1, S2);
     plot(m_S2(1,:), m_S2(2,:), '+g','MarkerSize',15);  
 
-figure
-imshow(S)
-hold on
-    Epipolar_Line(line_2, S);
-    plot(m_S1(1,:), m_S1(2,:), '+g','MarkerSize',15);
+% figure
+% imshow(S)
+% hold on
+%     Epipolar_Line(line_2, S);
+%     plot(m_S1(1,:), m_S1(2,:), '+g','MarkerSize',15);
 
 %% Factorisation of E and Triangulation
 
