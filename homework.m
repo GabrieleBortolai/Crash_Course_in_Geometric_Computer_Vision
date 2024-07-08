@@ -48,14 +48,14 @@ hold on
 
 S = imread("bottle_1.jpg");
 % figure
-% imshow(S)
+imshow(S)
 
 % m_S1 = ginput(15)';
 % writematrix(m_S1, "m_s1.txt")
 
 S2 = imread("bottle_2.jpg");
 % figure
-% imshow(S2)
+imshow(S2)
 
 % m_S2 = ginput(15)';
 % writematrix(m_S2, "m_s2.txt")
@@ -84,11 +84,11 @@ hold on
     Epipolar_Line(line_1, S2);
     plot(m_S2(1,:), m_S2(2,:), '+g','MarkerSize',15);  
 
-% figure
-% imshow(S)
-% hold on
-%     Epipolar_Line(line_2, S);
-%     plot(m_S1(1,:), m_S1(2,:), '+g','MarkerSize',15);
+figure
+imshow(S)
+hold on
+    Epipolar_Line(line_2, S);
+    plot(m_S1(1,:), m_S1(2,:), '+g','MarkerSize',15);
 
 %% Factorisation of E and Triangulation
 
