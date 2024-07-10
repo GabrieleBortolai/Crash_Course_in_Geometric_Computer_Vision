@@ -48,14 +48,14 @@ hold on
 
 S = imread("bottle_1.jpg");
 % figure
-imshow(S)
+% imshow(S)
 
 % m_S1 = ginput(15)';
 % writematrix(m_S1, "m_s1.txt")
 
 S2 = imread("bottle_2.jpg");
 % figure
-imshow(S2)
+% imshow(S2)
 
 % m_S2 = ginput(15)';
 % writematrix(m_S2, "m_s2.txt")
@@ -63,18 +63,24 @@ imshow(S2)
 m_S1 = readmatrix("m_s1.txt");
 m_S2 = readmatrix("m_s2.txt");
 
-F = eight_pts(m_S2, m_S1)
+%F = eight_pts(m_S2, m_S1)
 
 % Homogeneous Coordinates
 m_S1_o = [m_S1; ones(1, size(m_S1, 2))];
 m_S2_o = [m_S2; ones(1, size(m_S2, 2))];
 
+[m_S1_o_norm, T1] = normalizePoints(m_S1_o);
+[m_S2_o_norm, T2] = normalizePoints(m_S2_o);
+
+F = eight_pts(m_S2_o_norm, m_S1_o_norm);
+
 for i=1:size(m_S1_o,2)
-    m_S2_o(:,i)'*F*m_S1_o(:,i)
+    m_S2_o_norm(:,i)'*F*m_S1_o_norm(:,i);
 end
 
-
 % Epipolar Lines and plotting them
+% F_n = T2'* F * T1
+
 line_1 = F * m_S1_o;
 line_2 = F' * m_S2_o;
 
@@ -83,6 +89,7 @@ imshow(S2)
 hold on
     Epipolar_Line(line_1, S2);
     plot(m_S2(1,:), m_S2(2,:), '+g','MarkerSize',15);  
+hold off
 
 figure
 imshow(S)
@@ -113,9 +120,9 @@ m_S2_comp = ud_htx(P_m{2}, M_S);
 
 figure
 imshow(S)
-size(S)
 hold on
     Checking(m_S1, m_S1_comp)
+hold off
 
 figure
 imshow(S2)
@@ -151,4 +158,27 @@ function Epipolar_Line(epline, S)
         line(x, y)
 
     end
+end
+
+function [normalizedPoints, T] = normalizePoints(points)
+    % Compute the centroid of the points
+    centroid = mean(points(1:2, :), 2);
+    
+    % Translate points to the origin
+    translatedPoints = points(1:2, :) - centroid;
+    
+    % Compute the mean distance from the origin
+    distances = sqrt(sum(translatedPoints.^2, 1));
+    meanDistance = mean(distances);
+    
+    % Scale factor to make the mean distance sqrt(2)
+    scale = sqrt(2) / meanDistance;
+    
+    % Construct the normalization matrix
+    T = [scale 0 -scale * centroid(1);
+         0 scale -scale * centroid(2);
+         0 0 1];
+    
+    % Normalize the points
+    normalizedPoints = T * points;
 end
