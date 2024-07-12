@@ -46,24 +46,24 @@ hold on
 
 %% Epipolar Lines
 
-S = imread("bottle_1.jpg");
+S = imread("bottle_1.1.jpg");
 % figure
-% imshow(S)
+imshow(S)
 
-% m_S1 = ginput(15)';
+m_S1 = ginput(15)';
 % writematrix(m_S1, "m_s1.txt")
 
-S2 = imread("bottle_2.jpg");
+S2 = imread("bottle_2.1.jpg");
 % figure
-% imshow(S2)
+imshow(S2)
 
-% m_S2 = ginput(15)';
+m_S2 = ginput(15)';
 % writematrix(m_S2, "m_s2.txt")
 
-m_S1 = readmatrix("m_s1.txt");
-m_S2 = readmatrix("m_s2.txt");
+% m_S1 = readmatrix("m_s1.txt");
+% m_S2 = readmatrix("m_s2.txt");
 
-%F = eight_pts(m_S2, m_S1)
+% F = eight_pts(m_S2, m_S1);
 
 % Homogeneous Coordinates
 m_S1_o = [m_S1; ones(1, size(m_S1, 2))];
