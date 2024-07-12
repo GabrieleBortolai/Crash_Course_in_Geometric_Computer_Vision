@@ -7,19 +7,11 @@ I = imread("IMG_2506.jpg");
 imshow(I)
 
 % Inuput the 2D and 3D (M in mm) points
-% m = ginput(11)';
+% m = ginput(8)';
 % 
-% M = 20 * [1, 0, 2
-%       0, 1, 1
-%       8, 0, 1
-%       7, 0, 8
-%       0, 8, 2
-%       0, 7, 8
-%       0, 1, 7
-%       0, 4, 4
-%       3, 0, 6
-%       5, 0, 3
-%       0, 6, 5]';
+M = [ 160   160    20    20     0     0     0     0
+        0     0     0     0   160   160    20    20
+      160    20    20   160   160    20    20   160];
 
 % Save matrices
 
@@ -46,17 +38,17 @@ hold on
 
 %% Epipolar Lines
 
-S = imread("bottle_1.jpg");
+S = imread("composition1.jpg");
 % figure
 % imshow(S)
-
+% 
 % m_S1 = ginput(15)';
 % writematrix(m_S1, "m_s1.txt")
 
-S2 = imread("bottle_2.jpg");
+S2 = imread("composition2.jpg");
 % figure
 % imshow(S2)
-
+% 
 % m_S2 = ginput(15)';
 % writematrix(m_S2, "m_s2.txt")
 
@@ -67,21 +59,21 @@ m_S2 = readmatrix("m_s2.txt");
 m_S1_o = [m_S1; ones(1, size(m_S1, 2))];
 m_S2_o = [m_S2; ones(1, size(m_S2, 2))];
 
-[m_S1_o_norm, T1] = normalizePoints(m_S1_o);
-[m_S2_o_norm, T2] = normalizePoints(m_S2_o);
+% [m_S1_o_norm, T1] = normalizePoints(m_S1_o);
+% [m_S2_o_norm, T2] = normalizePoints(m_S2_o);
 
-% F = eight_points(m_S2_o, m_S1_o);
-F = eight_points(m_S2_o_norm, m_S1_o_norm);
+F = eight_points(m_S2_o, m_S1_o);
+% F_n = eight_points(m_S2_o_norm, m_S1_o_norm);
 
 % for i=1:size(m_S1_o,2)
 %     m_S2_o_norm(:,i)'*F*m_S1_o_norm(:,i)
 % end
 
 % Epipolar Lines and plotting them
-F_n = T2'* F * T1;
+% F = T2'* F_n * T1;
 
-line_1 = F_n * m_S1_o;
-line_2 = F_n' * m_S2_o;
+line_1 = F * m_S1_o;
+line_2 = F' * m_S2_o;
 
 figure
 imshow(S2)
@@ -110,7 +102,7 @@ for i = 1:size(m_S1, 2)
     M_S(:, i) = ud_triang(P_m, {m_S1(:, i), m_S2(:, i)});
 end
 
-% Projection on the images
+% Projection on the imagezs
 
 m_S1_comp = ud_htx(P_m{1}, M_S);
 m_S2_comp = ud_htx(P_m{2}, M_S);
