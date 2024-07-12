@@ -46,24 +46,22 @@ hold on
 
 %% Epipolar Lines
 
-S = imread("bottle_1.1.jpg");
+S = imread("bottle_1.jpg");
 % figure
-imshow(S)
+% imshow(S)
 
-m_S1 = ginput(15)';
+% m_S1 = ginput(15)';
 % writematrix(m_S1, "m_s1.txt")
 
-S2 = imread("bottle_2.1.jpg");
+S2 = imread("bottle_2.jpg");
 % figure
-imshow(S2)
+% imshow(S2)
 
-m_S2 = ginput(15)';
+% m_S2 = ginput(15)';
 % writematrix(m_S2, "m_s2.txt")
 
-% m_S1 = readmatrix("m_s1.txt");
-% m_S2 = readmatrix("m_s2.txt");
-
-% F = eight_pts(m_S2, m_S1);
+m_S1 = readmatrix("m_s1.txt");
+m_S2 = readmatrix("m_s2.txt");
 
 % Homogeneous Coordinates
 m_S1_o = [m_S1; ones(1, size(m_S1, 2))];
@@ -72,17 +70,18 @@ m_S2_o = [m_S2; ones(1, size(m_S2, 2))];
 [m_S1_o_norm, T1] = normalizePoints(m_S1_o);
 [m_S2_o_norm, T2] = normalizePoints(m_S2_o);
 
-F = eight_pts(m_S2_o_norm, m_S1_o_norm);
+% F = eight_points(m_S2_o, m_S1_o);
+F = eight_points(m_S2_o_norm, m_S1_o_norm);
 
-for i=1:size(m_S1_o,2)
-    m_S2_o_norm(:,i)'*F*m_S1_o_norm(:,i);
-end
+% for i=1:size(m_S1_o,2)
+%     m_S2_o_norm(:,i)'*F*m_S1_o_norm(:,i)
+% end
 
 % Epipolar Lines and plotting them
-% F_n = T2'* F * T1
+F_n = T2'* F * T1;
 
-line_1 = F * m_S1_o;
-line_2 = F' * m_S2_o;
+line_1 = F_n * m_S1_o;
+line_2 = F_n' * m_S2_o;
 
 figure
 imshow(S2)
@@ -168,6 +167,7 @@ function [normalizedPoints, T] = normalizePoints(points)
     translatedPoints = points(1:2, :) - centroid;
     
     % Compute the mean distance from the origin
+    % distances = pdist(translatedPoints',"euclidean");
     distances = sqrt(sum(translatedPoints.^2, 1));
     meanDistance = mean(distances);
     
