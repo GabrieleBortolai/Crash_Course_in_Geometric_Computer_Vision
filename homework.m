@@ -8,7 +8,7 @@ imshow(I)
 
 % Inuput the 2D and 3D (M in mm) points
 % m = ginput(8)';
-% 
+
 M = [ 160   160    20    20     0     0     0     0
         0     0     0     0   160   160    20    20
       160    20    20   160   160    20    20   160];
@@ -59,18 +59,18 @@ m_S2 = readmatrix("m_s2.txt");
 m_S1_o = [m_S1; ones(1, size(m_S1, 2))];
 m_S2_o = [m_S2; ones(1, size(m_S2, 2))];
 
-% [m_S1_o_norm, T1] = normalizePoints(m_S1_o);
-% [m_S2_o_norm, T2] = normalizePoints(m_S2_o);
+[m_S1_o_norm, T1] = normalizePoints(m_S1_o);
+[m_S2_o_norm, T2] = normalizePoints(m_S2_o);
 
-F = eight_points(m_S2_o, m_S1_o);
-% F_n = eight_points(m_S2_o_norm, m_S1_o_norm);
+% F = eight_points(m_S2_o, m_S1_o);
+F_n = eight_points(m_S2_o_norm, m_S1_o_norm);
 
 % for i=1:size(m_S1_o,2)
 %     m_S2_o_norm(:,i)'*F*m_S1_o_norm(:,i)
 % end
 
 % Epipolar Lines and plotting them
-% F = T2'* F_n * T1;
+F = T2'* F_n * T1;
 
 line_1 = F * m_S1_o;
 line_2 = F' * m_S2_o;
